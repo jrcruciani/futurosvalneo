@@ -27,8 +27,7 @@ const App = {
         document.getElementById('btn-sync-r2')?.addEventListener('click', () => this.syncDatasources());
         document.getElementById('btn-refresh')?.addEventListener('click', () => this.loadData(true));
         document.getElementById('btn-snapshot')?.addEventListener('click', () => this.saveSnapshot());
-        document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis(false));
-        document.getElementById('btn-analysis-force')?.addEventListener('click', () => this.runAnalysis(true));
+        document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis(true));
 
     },
 
