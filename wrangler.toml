@@ -5,11 +5,11 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "DB"
 database_name = "futurosvalneo-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "d24675ad-4083-44be-a0ca-da4a02312922"
 
 [[r2_buckets]]
 binding = "SOURCES"
-bucket_name = "futurosvalneo-sources"
+bucket_name = "futurosvalneo"
 
 # CLAUDE_API_KEY must be set as a secret in Cloudflare Pages dashboard:
 # Settings > Environment variables > Add secret: CLAUDE_API_KEY
