@@ -1,6 +1,0 @@
-Por favor verifica el archivo .csv adjunto : 
-
-08.cme_oi_heatmap.csv
-
-Te adjunto el archivo NQ_Price.txt que contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
-[3/6/2026 9:47 AM] M. G.: este archivo es la base del arhivo en PDF que te entregue en el prompt anterior, analiza y confirma los valores del pdf con nuestros archivos .csv y confirmame si encuentras total relacion, una vez confirmada,  revisa mas en profunidad como analista profesional que eres, complementa esta informacion con la del pdf anterior para que estemos seguros de que no se nos esten escapando niveles que puedan llamar nuestra atencion por favor que tu analisis sea minucioso, no quiero revisar y que se te haya pasado algo, recuerda que los errores y omisiones nos salen caros

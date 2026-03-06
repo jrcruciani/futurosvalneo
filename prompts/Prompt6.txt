@@ -1,9 +1,0 @@
-Por favor verifica los archivos .csv adjuntos : 
-04.most_actives_calls.csv
-05.most_actives_puts.csv
-06.most_actives_calls_OIC.csv
-07.most_actives_puts_OIC.csv
-
-Te adjunto el archivo NQ_Price.txt que contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
-
-estos archivos son los que forman del arhivo en PDF que te entregue en el prompt anterior, analiza y confirma los valores del pdf con nuestros archivos .csv y confirmame si encuentras total relacion, una vez confirmada,  revisa mas en profunidad como analista profesional que eres, que no se nos esten escapando niveles en los STRIKE PRICE que tengan un valor de VOL y un CHG que pueda llamar nuestra atencion por favor que tu analisis sea minucioso, no quiero revisar y que se te haya pasado algo, recuerda que los errores y omisiones nos salen caros

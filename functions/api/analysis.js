@@ -1,6 +1,52 @@
-import { buildDashboardData, getPromptBundle, jsonError } from './_helpers.js';
+import { buildDashboardData, jsonError } from './_helpers.js';
 
 const RUN_TYPE = 'prompt_orchestrator';
+const PROMPT_BUNDLE = [
+    {
+        id: 1,
+        text: 'Marco metodológico: para cada dataset explicar qué se busca, cómo se interpreta, su importancia en liquidez y confluencia Smart Money.',
+    },
+    {
+        id: 2,
+        text: 'Validación cruzada de OI Change Heatmap con CSV + precio NQ actual, priorizando niveles críticos intradía.',
+    },
+    {
+        id: 3,
+        text: 'Profundización de los niveles más inusuales: naturaleza Call/Put, comportamiento del precio, anomalías ITM y sesgo operativo.',
+    },
+    {
+        id: 4,
+        text: 'Módulo 1 OI Change: zonas de resistencia/soporte, relación Volumen vs OI Change y diagnóstico para la sesión.',
+    },
+    {
+        id: 5,
+        text: 'Módulo 2 Most Active Strikes: net change global, dinero nuevo vs liquidación, murallas y anomalías institucionales.',
+    },
+    {
+        id: 6,
+        text: 'Verificación CSV de Most Active (calls/puts/OIC) contra PDF y detección minuciosa de strikes con VOL/CHG relevantes.',
+    },
+    {
+        id: 7,
+        text: 'Módulo 3 OI Heatmap: persistencia temporal, call/put walls, anomalías ITM y mapa operativo compra/venta.',
+    },
+    {
+        id: 8,
+        text: 'Validación adicional del OI Heatmap CSV contra PDF para evitar omisiones de niveles significativos.',
+    },
+    {
+        id: 9,
+        text: 'Módulo 4 Vol2Vol Intraday: actualizar mapa operativo con zonas de entrada long/short y razón técnica.',
+    },
+    {
+        id: 10,
+        text: 'Módulo 5 QuikVol: lectura de Implied vs Actual, Diff y conclusiones institucionales (muralla, suelo defensivo, sentimiento).',
+    },
+    {
+        id: 11,
+        text: 'Módulo 6 DarkPool: convertir niveles QQQ->NQ, interpretar concentración de volumen y actualizar diagnóstico operativo final.',
+    },
+];
 
 function buildDeterministicNarrative(data, promptMeta) {
     const s = data.summary || {};
@@ -109,10 +155,8 @@ export async function onRequestPost(context) {
             }
         }
 
-        const [data, prompts] = await Promise.all([
-            buildDashboardData(db),
-            getPromptBundle(context.request.url, 11),
-        ]);
+        const data = await buildDashboardData(db);
+        const prompts = PROMPT_BUNDLE.map((prompt) => ({ ...prompt, missing: false }));
 
         let narrative;
         let usage = null;

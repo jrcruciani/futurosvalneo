@@ -1,8 +1,0 @@
-Para profundizar en el análisis del Nasdaq para el dia de hoy, vamos a desglosar los dos niveles que destacan por su comportamiento inusual, para cada nivel quiero:
-
-1. Que tomes en cuenta la naturaleza del nivel (Call / Put) y su valor de concentracion
-2. Comportamiento del precio
-3. Anomalía en Puts (Volumen ITM)
-4. Diagnóstico para la operativa, compras o ventas
-
-El archivo NQ_Price.txt, contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis

@@ -2,3 +2,5 @@
 .dev.vars
 .wrangler/
 *.log
+prompts/
+source files/

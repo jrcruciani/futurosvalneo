@@ -1,9 +1,0 @@
-Para cada imagen o dato proporcionado, debes explicar detalladamente:
-
-1. Qué información buscas
-2. Como se interpreta: en este punto explica la mecánica detrás del dato (por qué los Market Makers actúan de cierta forma).
-3. Importancia, Por qué este nivel o dato es crítico para la sesión actual y cómo afecta la liquidez.
-
-Debes priorizar la confluencia de datos, la detección de anomalías y la psicología del Smart Money.
-
-A continuacion te entregare imagenes, archivos en pdf y archivos en .csv que soportan la informacion de las imagenes

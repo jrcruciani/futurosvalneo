@@ -737,18 +737,3 @@ export async function buildDashboardData(db) {
         missingInputs,
     };
 }
-
-export async function getPromptBundle(requestUrl, count = 11) {
-    const base = new URL(requestUrl).origin;
-    const prompts = [];
-    for (let i = 1; i <= count; i++) {
-        const url = `${base}/prompts/Prompt${i}.txt`;
-        const res = await fetch(url);
-        if (!res.ok) {
-            prompts.push({ id: i, text: '', missing: true });
-            continue;
-        }
-        prompts.push({ id: i, text: await res.text(), missing: false });
-    }
-    return prompts;
-}
