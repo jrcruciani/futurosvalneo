@@ -525,9 +525,8 @@ body {
 /* Narrative */
 .analysis-content {
     padding: 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 12px;
+    columns: 320px 3;
+    column-gap: 12px;
     line-height: 1.6;
     font-size: 0.82rem;
     color: var(--text-body);
@@ -553,6 +552,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    break-inside: avoid;
+    margin-bottom: 12px;
 }
 
 .analysis-content .narrative-section:hover {
@@ -875,5 +876,5 @@ body {
     body { font-size: 14px; }
     .metric-big { font-size: 1.5rem; }
     .analysis-metrics-row { grid-template-columns: 1fr 1fr; }
-    .analysis-content { grid-template-columns: 1fr; }
+    .analysis-content { columns: 1; }
 }
