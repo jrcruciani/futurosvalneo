@@ -248,14 +248,176 @@ const App = {
     renderAnalysis() {
         const el = document.getElementById('analysis-content');
         if (!el || !this.analysis) return;
+
+        const d = this.analysis.data || this.data || {};
+        const s = d.summary || {};
+        const m = d.market || {};
+        const visuals = document.getElementById('analysis-visuals');
+
+        // Show visuals if we have data
+        if (visuals && (s.callWall || s.putWall)) {
+            visuals.classList.remove('hidden');
+            this.renderAnalysisMetrics(d);
+            this.renderLevelsBar(d);
+            this.renderAnalysisCharts(d);
+        }
+
+        // Render narrative
         el.classList.remove('empty');
         el.innerHTML = this.md(this.analysis.narrative || 'Sin narrativa.');
+
         this.setText('analysis-time', this.analysis.createdAt ? `Generado: ${new Date(this.analysis.createdAt).toLocaleString()}` : '');
         const badge = document.getElementById('analysis-cache');
         if (badge) {
             badge.textContent = this.analysis.fromCache ? 'Cached' : 'Fresh';
             badge.className = `badge ${this.analysis.fromCache ? 'cached' : 'fresh'}`;
         }
+    },
+
+    renderAnalysisMetrics(d) {
+        const s = d.summary || {};
+        const m = d.market || {};
+        const em = d.expectedMove || {};
+
+        // Bias
+        const biasEl = document.getElementById('analysis-bias');
+        if (biasEl) {
+            const pcr = s.pcRatio || 0;
+            const isBullish = pcr < 0.8;
+            const isBearish = pcr > 1.2;
+            biasEl.textContent = isBearish ? 'Bearish (P/C ' + pcr.toFixed(2) + ')' :
+                                 isBullish ? 'Bullish (P/C ' + pcr.toFixed(2) + ')' :
+                                 'Neutral (P/C ' + pcr.toFixed(2) + ')';
+            biasEl.className = 'analysis-metric-value ' + (isBearish ? 'bearish' : isBullish ? 'bullish' : 'neutral');
+        }
+
+        // Expected Move
+        const moveEl = document.getElementById('analysis-move');
+        if (moveEl && em.movePercent) {
+            moveEl.textContent = em.movePercent.toFixed(1) + '%';
+            moveEl.className = 'analysis-metric-value';
+        }
+
+        // Volume ratio
+        const volEl = document.getElementById('analysis-vol-ratio');
+        if (volEl) {
+            const cv = s.totalCallVolume || 0;
+            const pv = s.totalPutVolume || 0;
+            volEl.textContent = cv.toLocaleString() + ' / ' + pv.toLocaleString();
+            volEl.className = 'analysis-metric-value ' + (cv > pv ? 'bullish' : cv < pv ? 'bearish' : 'neutral');
+        }
+
+        // Net OI Change
+        const netEl = document.getElementById('analysis-net-oi');
+        if (netEl) {
+            const net = s.netOIChange || 0;
+            netEl.textContent = (net > 0 ? '+' : '') + net.toLocaleString();
+            netEl.className = 'analysis-metric-value ' + (net > 0 ? 'bullish' : net < 0 ? 'bearish' : 'neutral');
+        }
+    },
+
+    renderLevelsBar(d) {
+        const bar = document.getElementById('levels-bar');
+        const legend = document.getElementById('levels-legend');
+        if (!bar) return;
+
+        const s = d.summary || {};
+        const m = d.market || {};
+        const mp = d.maxPain?.nqEquivalent;
+        const nq = m.nqPrice;
+        const cw = s.callWall;
+        const pw = s.putWall;
+        const attr = s.attractionStrike;
+
+        const levels = [
+            { label: 'Put Wall', value: pw, color: '#f87171' },
+            { label: 'Max Pain', value: mp, color: '#fbbf24' },
+            { label: 'Attraction', value: attr, color: '#a78bfa' },
+            { label: 'NQ Price', value: nq, color: '#60a5fa' },
+            { label: 'Call Wall', value: cw, color: '#4ade80' },
+        ].filter(l => l.value != null);
+
+        if (levels.length < 2) {
+            bar.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem;display:flex;align-items:center;justify-content:center;height:100%">Sin datos suficientes</span>';
+            return;
+        }
+
+        const values = levels.map(l => l.value);
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        const range = max - min || 1;
+        const pad = range * 0.08;
+
+        bar.innerHTML = levels.map(l => {
+            const pct = ((l.value - min + pad) / (range + pad * 2)) * 100;
+            return `<div class="level-marker" style="left:${pct}%">
+                <span class="level-price" style="color:${l.color}">${Math.round(l.value).toLocaleString()}</span>
+                <span class="level-dot" style="background:${l.color}"></span>
+                <span class="level-label">${l.label}</span>
+            </div>`;
+        }).join('');
+
+        if (legend) {
+            legend.innerHTML = levels.map(l =>
+                `<span class="levels-legend-item">
+                    <span class="levels-legend-dot" style="background:${l.color}"></span>
+                    ${l.label}: ${Math.round(l.value).toLocaleString()}
+                </span>`
+            ).join('');
+        }
+    },
+
+    renderAnalysisCharts(d) {
+        const oi = d.oiDistribution;
+        if (oi && oi.nqStrikes?.length && typeof Chart !== 'undefined') {
+            Charts.defaults();
+            Charts.renderOI('chart-oi-dist', oi, d.maxPain?.nqEquivalent);
+            this.renderVolChart(oi);
+        }
+    },
+
+    renderVolChart(oi) {
+        const ctx = document.getElementById('chart-vol-cp')?.getContext('2d');
+        if (!ctx) return;
+
+        if (this._volChart) this._volChart.destroy();
+
+        // Aggregate top strikes by volume for a cleaner chart
+        const indices = oi.nqStrikes.map((s, i) => i)
+            .filter(i => (oi.callVolume[i] || 0) + (oi.putVolume[i] || 0) > 0)
+            .sort((a, b) => (oi.callVolume[b] + oi.putVolume[b]) - (oi.callVolume[a] + oi.putVolume[a]))
+            .slice(0, 15)
+            .sort((a, b) => oi.nqStrikes[a] - oi.nqStrikes[b]);
+
+        if (!indices.length) return;
+
+        const labels = indices.map(i => oi.nqStrikes[i].toLocaleString());
+        const callData = indices.map(i => oi.callVolume[i] || 0);
+        const putData = indices.map(i => -(oi.putVolume[i] || 0));
+
+        this._volChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'Call Vol', data: callData, backgroundColor: 'rgba(74, 222, 128, 0.7)', borderRadius: 2 },
+                    { label: 'Put Vol', data: putData, backgroundColor: 'rgba(248, 113, 113, 0.7)', borderRadius: 2 },
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { boxWidth: 10, padding: 12, font: { size: 10 } } },
+                    tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${Math.abs(c.raw).toLocaleString()}` } }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, font: { size: 9 } } },
+                    y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { callback: v => { const a = Math.abs(v); return a >= 1000 ? (a/1000).toFixed(0)+'K' : a; } } }
+                }
+            }
+        });
     },
 
     renderHistory(snapshots) {
@@ -286,13 +448,22 @@ const App = {
     },
 
     md(text) {
-        return String(text || '')
-            .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-            .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-            .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n- /g, '\n• ')
-            .replace(/\n/g, '<br>');
+        const raw = String(text || '');
+        // Split into sections by h2
+        const sections = raw.split(/^(?=## )/gm);
+        return sections.map(section => {
+            const html = section
+                .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+                .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+                .replace(/\n{2,}/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+            return section.trim() ? `<div class="narrative-section"><p>${html}</p></div>` : '';
+        }).join('');
     },
 };
 

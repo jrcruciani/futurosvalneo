@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg">
     <meta name="theme-color" content="#6b5ce7">
@@ -99,18 +100,60 @@
     <section class="card analysis-card content-section">
         <div class="card-header">
             <div>
-                <span class="card-icon">🤖</span>
-                <span class="card-title">Orquestación Prompt-Driven</span>
+                <span class="card-title">Diagnostico Operativo</span>
                 <span id="analysis-cache" class="badge"></span>
             </div>
             <span id="analysis-time" class="analysis-time"></span>
         </div>
         <div id="loading-analysis" class="loading-inline hidden">
             <div class="spinner-sm"></div>
-            <span>Ejecutando módulos de análisis...</span>
+            <span>Ejecutando modulos de analisis...</span>
         </div>
+
+        <div id="analysis-visuals" class="analysis-visuals hidden">
+            <div class="analysis-metrics-row">
+                <div class="analysis-metric">
+                    <span class="analysis-metric-label">Sesgo</span>
+                    <span id="analysis-bias" class="analysis-metric-value">--</span>
+                </div>
+                <div class="analysis-metric">
+                    <span class="analysis-metric-label">Expected Move</span>
+                    <span id="analysis-move" class="analysis-metric-value">--</span>
+                </div>
+                <div class="analysis-metric">
+                    <span class="analysis-metric-label">Call Vol / Put Vol</span>
+                    <span id="analysis-vol-ratio" class="analysis-metric-value">--</span>
+                </div>
+                <div class="analysis-metric">
+                    <span class="analysis-metric-label">Net OI Change</span>
+                    <span id="analysis-net-oi" class="analysis-metric-value">--</span>
+                </div>
+            </div>
+
+            <div class="levels-map">
+                <div class="levels-map-title">Mapa de Niveles Clave</div>
+                <div id="levels-bar" class="levels-bar"></div>
+                <div id="levels-legend" class="levels-legend"></div>
+            </div>
+
+            <div class="analysis-charts-grid">
+                <div class="analysis-chart-box">
+                    <div class="analysis-chart-title">OI Distribution por Strike</div>
+                    <div class="chart-container chart-short">
+                        <canvas id="chart-oi-dist"></canvas>
+                    </div>
+                </div>
+                <div class="analysis-chart-box">
+                    <div class="analysis-chart-title">Volumen Call vs Put</div>
+                    <div class="chart-container chart-short">
+                        <canvas id="chart-vol-cp"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="analysis-content" class="analysis-content empty">
-            <p class="empty-msg">Ejecuta "Orquestar" para consolidar Prompt1..Prompt11 con los datos actuales.</p>
+            <p class="empty-msg">Ejecuta "Ejecutar Prompts" para consolidar datos y generar diagnostico.</p>
         </div>
     </section>
 
@@ -142,6 +185,7 @@
     </footer>
 
     <script src="/js/api.js"></script>
+    <script src="/js/charts.js"></script>
     <script src="/js/app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
