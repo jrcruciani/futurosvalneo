@@ -178,8 +178,12 @@ const App = {
                 <span class="market-value">${m.conversionRatio ?? 'N/D'}x</span>
             </div>
             <div class="market-item">
-                <span class="market-label">Último Tick</span>
-                <span class="market-value">${m.lastTickTime ? new Date(m.lastTickTime).toLocaleTimeString() : 'N/D'}</span>
+                <span class="market-label">Madrid</span>
+                <span class="market-value">${m.lastTickTime ? new Date(m.lastTickTime).toLocaleTimeString('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/D'}</span>
+            </div>
+            <div class="market-item">
+                <span class="market-label">Colombia</span>
+                <span class="market-value">${m.lastTickTime ? new Date(m.lastTickTime).toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/D'}</span>
             </div>
         `;
     },
