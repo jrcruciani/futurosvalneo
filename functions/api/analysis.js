@@ -136,58 +136,32 @@ async function getCachedRun(db, runDate) {
 export async function onRequestPost(context) {
     const db = context.env.DB;
     try {
-        const body = await context.request.json();
-        const force = !!body.force;
-        const useClaude = !!body.useClaude;
-        const runDate = new Date().toISOString().slice(0, 10);
-
-        if (!force) {
-            const cached = await getCachedRun(db, runDate);
-            if (cached) {
-                return Response.json({
-                    success: true,
-                    fromCache: true,
-                    runDate,
-                    narrative: cached.narrative,
-                    data: JSON.parse(cached.data_json),
-                    createdAt: cached.created_at,
-                });
-            }
+        if (!context.env.CLAUDE_API_KEY) {
+            return jsonError('CLAUDE_API_KEY no configurado.', 400);
         }
 
+        const runDate = new Date().toISOString().slice(0, 10);
         const data = await buildDashboardData(db);
         const prompts = PROMPT_BUNDLE.map((prompt) => ({ ...prompt, missing: false }));
 
-        let narrative;
-        let usage = null;
-
-        if (useClaude) {
-            if (!context.env.CLAUDE_API_KEY) {
-                return jsonError('CLAUDE_API_KEY no configurado para useClaude=true.', 400);
-            }
-            const result = await runClaudeAnalysis(context, prompts, data);
-            narrative = result.narrative;
-            usage = result.usage;
-        } else {
-            narrative = buildDeterministicNarrative(data, prompts);
-        }
+        const result = await runClaudeAnalysis(context, prompts, data);
 
         const payload = {
             ...data,
             prompts: prompts.map((p) => ({ id: p.id, missing: p.missing })),
-            claudeUsage: usage,
+            claudeUsage: result.usage,
         };
 
-        await saveRun(db, runDate, narrative, payload, false);
+        await saveRun(db, runDate, result.narrative, payload, false);
 
         return Response.json({
             success: true,
             fromCache: false,
             runDate,
-            narrative,
+            narrative: result.narrative,
             data: payload,
             createdAt: new Date().toISOString(),
-            usage,
+            usage: result.usage,
         });
     } catch (error) {
         return jsonError(error.message, 500);

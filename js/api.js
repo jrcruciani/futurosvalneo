@@ -33,11 +33,8 @@ const API = {
         return this.request(`/api/history?days=${days}`);
     },
 
-    runAnalysis(force = false, useClaude = false) {
-        return this.request('/api/analysis', {
-            method: 'POST',
-            body: JSON.stringify({ force, useClaude }),
-        });
+    runAnalysis() {
+        return this.request('/api/analysis', { method: 'POST' });
     },
 
     getAnalysis() {

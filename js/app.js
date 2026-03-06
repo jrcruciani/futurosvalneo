@@ -27,7 +27,7 @@ const App = {
         document.getElementById('btn-sync-r2')?.addEventListener('click', () => this.syncDatasources());
         document.getElementById('btn-refresh')?.addEventListener('click', () => this.loadData(true));
         document.getElementById('btn-snapshot')?.addEventListener('click', () => this.saveSnapshot());
-        document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis(true));
+        document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis());
 
     },
 
@@ -86,7 +86,7 @@ const App = {
         }
     },
 
-    async runAnalysis(force = false) {
+    async runAnalysis() {
         if (!this.data) {
             this.showError('Primero carga datos del dashboard.');
             return;
@@ -94,9 +94,9 @@ const App = {
 
         this.setLoading('loading-analysis', true);
         try {
-            this.analysis = await API.runAnalysis(force, true);
+            this.analysis = await API.runAnalysis();
             this.renderAnalysis();
-            this.showToast(this.analysis.fromCache ? 'Análisis cacheado.' : 'Análisis generado.');
+            this.showToast('Análisis generado.');
         } catch (error) {
             this.showError(`Análisis: ${error.message}`);
         } finally {
