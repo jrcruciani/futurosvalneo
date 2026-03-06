@@ -447,22 +447,16 @@ const App = {
     },
 
     md(text) {
-        const raw = String(text || '');
-        // Split into sections by h2
-        const sections = raw.split(/^(?=## )/gm);
-        return sections.map(section => {
-            const html = section
-                .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-                .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-                .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                .replace(/`([^`]+)`/g, '<code>$1</code>')
-                .replace(/^- (.+)$/gm, '<li>$1</li>')
-                .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
-                .replace(/\n{2,}/g, '</p><p>')
-                .replace(/\n/g, '<br>');
-            return section.trim() ? `<div class="narrative-section"><p>${html}</p></div>` : '';
-        }).join('');
+        return String(text || '')
+            .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+            .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+            .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/^- (.+)$/gm, '<li>$1</li>')
+            .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+            .replace(/\n{2,}/g, '</p><p>')
+            .replace(/\n/g, '<br>');
     },
 };
 

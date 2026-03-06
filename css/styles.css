@@ -524,18 +524,14 @@ body {
 
 /* Narrative */
 .analysis-content {
-    padding: 16px;
-    columns: 320px 3;
-    column-gap: 12px;
-    line-height: 1.6;
-    font-size: 0.82rem;
+    padding: 20px 24px;
+    line-height: 1.7;
+    font-size: 0.85rem;
     color: var(--text-body);
 }
 
 .analysis-content.empty {
-    display: flex;
     text-align: center;
-    justify-content: center;
 }
 
 .analysis-content .empty-msg {
@@ -544,55 +540,45 @@ body {
     padding: 40px 0;
 }
 
-.analysis-content .narrative-section {
-    background: var(--bg-main);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    break-inside: avoid;
-    margin-bottom: 12px;
-}
-
-.analysis-content .narrative-section:hover {
-    border-color: var(--primary-light);
-    box-shadow: var(--shadow-sm);
-}
-
-.analysis-content h2, .analysis-content h3 {
-    font-size: 0.8rem;
+.analysis-content h2 {
+    font-size: 1.05rem;
     color: var(--primary);
-    margin: 0 0 8px;
-    padding-bottom: 6px;
+    margin: 24px 0 8px;
+    padding-bottom: 4px;
     border-bottom: 2px solid var(--primary-light);
+}
+.analysis-content h2:first-child { margin-top: 0; }
+
+.analysis-content h3 {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin: 16px 0 6px;
 }
 
 .analysis-content h4 {
-    font-size: 0.8rem;
+    font-size: 0.88rem;
     color: var(--text-dark);
-    margin: 8px 0 4px;
+    margin: 12px 0 4px;
 }
 
 .analysis-content ul {
-    margin: 4px 0;
-    padding-left: 16px;
+    margin: 8px 0;
+    padding-left: 20px;
 }
 
 .analysis-content li {
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
 .analysis-content table {
     width: 100%;
     border-collapse: collapse;
-    margin: 8px 0;
-    font-size: 0.78rem;
+    margin: 12px 0;
+    font-size: 0.82rem;
 }
 
 .analysis-content th, .analysis-content td {
-    padding: 6px 10px;
+    padding: 8px 12px;
     text-align: left;
     border-bottom: 1px solid var(--border);
 }
@@ -605,7 +591,7 @@ body {
     background: var(--border-light);
     padding: 2px 6px;
     border-radius: 4px;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
 }
 
 .analysis-content strong {
@@ -613,7 +599,7 @@ body {
 }
 
 .analysis-content p {
-    margin: 0;
+    margin: 0 0 8px;
 }
 
 /* --- Loading --- */
@@ -876,5 +862,5 @@ body {
     body { font-size: 14px; }
     .metric-big { font-size: 1.5rem; }
     .analysis-metrics-row { grid-template-columns: 1fr 1fr; }
-    .analysis-content { columns: 1; }
+    .analysis-content { padding: 16px; }
 }
