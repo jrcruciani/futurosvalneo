@@ -10,6 +10,13 @@ const App = {
     },
 
     bindEvents() {
+        document.getElementById('btn-status')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('status-panel')?.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => {
+            document.getElementById('status-panel')?.classList.add('hidden');
+        });
         document.getElementById('btn-sync-r2')?.addEventListener('click', () => this.syncDatasources());
         document.getElementById('btn-refresh')?.addEventListener('click', () => this.loadData(true));
         document.getElementById('btn-snapshot')?.addEventListener('click', () => this.saveSnapshot());
@@ -174,7 +181,6 @@ const App = {
         this.setText('metric-call-wall', s.callWall ?? 'N/D');
         this.setText('metric-put-wall', s.putWall ?? 'N/D');
         this.setText('metric-pcr', s.pcRatio != null ? s.pcRatio.toFixed(3) : 'N/D');
-        this.setText('metric-oi', `C:${s.totalCallOI ?? 0} / P:${s.totalPutOI ?? 0}`);
         this.setText('metric-vol', `C:${s.totalCallVolume ?? 0} / P:${s.totalPutVolume ?? 0}`);
     },
 
@@ -208,11 +214,17 @@ const App = {
         list.innerHTML = modules.length
             ? modules.map((mod) => `
                 <li class="module-item ${mod.status}">
-                    <span>${mod.label}</span>
+                    <span>${mod.status === 'ready' ? '✓' : '○'} ${mod.label}</span>
                     <span class="module-meta">${mod.fileCount} archivos · ${mod.lastIngested ? new Date(mod.lastIngested).toLocaleString() : 'sin carga'}</span>
                 </li>
             `).join('')
             : '<li class="module-item pending">Sin estado de módulos.</li>';
+
+        const btn = document.getElementById('btn-status');
+        if (btn) {
+            const allReady = modules.length > 0 && modules.every((m) => m.status === 'ready');
+            btn.className = `btn btn-ghost btn-sm ${allReady ? 'all-ready' : 'has-pending'}`;
+        }
     },
 
     renderAnalysis() {

@@ -641,6 +641,59 @@ body {
     font-size: 0.72rem;
 }
 
+/* --- Full-width card --- */
+.full-width-card {
+    margin: 16px 24px 0;
+}
+
+/* --- Status Dropdown --- */
+.status-dropdown {
+    position: relative;
+}
+
+#btn-status {
+    font-size: 0.72rem;
+    gap: 6px;
+}
+#btn-status .dot { font-size: 0.6rem; }
+#btn-status.all-ready { color: #4ade80; border-color: rgba(74,222,128,0.4); }
+#btn-status.has-pending { color: var(--accent-amber); border-color: rgba(251,191,36,0.4); }
+
+.status-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 300px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 500;
+    overflow: hidden;
+}
+
+.status-panel-title {
+    padding: 10px 16px 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-light);
+}
+.status-panel-title:first-child { border-top: none; }
+
+.status-panel .module-list {
+    padding: 0 16px 8px;
+}
+
+.status-panel .module-item {
+    padding: 5px 0;
+    font-size: 0.78rem;
+    border-bottom: 1px solid var(--border-light);
+}
+.status-panel .module-item:last-child { border-bottom: none; }
+
 /* --- Responsive --- */
 @media (max-width: 900px) {
     .metrics-row { grid-template-columns: repeat(2, 1fr); }

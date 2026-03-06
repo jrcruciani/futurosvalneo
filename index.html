@@ -25,6 +25,15 @@
             <span class="header-subtitle">CME + NinjaTrader + DarkPool + QuikVol</span>
         </div>
         <div class="header-right">
+            <div class="status-dropdown">
+                <button id="btn-status" class="btn btn-ghost btn-sm">⬤ Estado</button>
+                <div id="status-panel" class="status-panel hidden">
+                    <div class="status-panel-title">Estado de Módulos</div>
+                    <ul id="module-status" class="module-list"></ul>
+                    <div class="status-panel-title">Faltantes Detectados</div>
+                    <ul id="missing-inputs" class="module-list"></ul>
+                </div>
+            </div>
             <span id="cache-badge" class="badge cached"></span>
             <button id="btn-sync-r2" class="btn btn-secondary">↓ Sync R2</button>
             <button id="btn-refresh" class="btn btn-secondary">↻ Refresh</button>
@@ -61,43 +70,29 @@
         </div>
     </section>
 
-    <section class="two-col">
-        <div class="card table-card">
-            <div class="card-header">
-                <span class="card-title">Most Active Strikes</span>
-                <span class="card-badge" id="metric-vol">C:0 / P:0</span>
-            </div>
-            <div class="table-scroll">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>NQ Strike</th>
-                            <th>Vol Total</th>
-                            <th class="call">Call Vol</th>
-                            <th class="put">Put Vol</th>
-                            <th>Call OI</th>
-                            <th>Put OI</th>
-                            <th>C OI Δ</th>
-                            <th>P OI Δ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="active-strikes-body">
-                        <tr><td colspan="8" class="empty-cell">Sin datos</td></tr>
-                    </tbody>
-                </table>
-            </div>
+    <section class="card table-card full-width-card">
+        <div class="card-header">
+            <span class="card-title">Most Active Strikes</span>
+            <span class="card-badge" id="metric-vol">C:0 / P:0</span>
         </div>
-
-        <div class="card vol-card">
-            <div class="card-header">
-                <span class="card-title">Estado de Módulos</span>
-                <span class="card-badge" id="metric-oi">C:0 / P:0</span>
-            </div>
-            <ul id="module-status" class="module-list"></ul>
-            <div class="card-header">
-                <span class="card-title">Faltantes Detectados</span>
-            </div>
-            <ul id="missing-inputs" class="module-list"></ul>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>NQ Strike</th>
+                        <th>Vol Total</th>
+                        <th class="call">Call Vol</th>
+                        <th class="put">Put Vol</th>
+                        <th>Call OI</th>
+                        <th>Put OI</th>
+                        <th>C OI Δ</th>
+                        <th>P OI Δ</th>
+                    </tr>
+                </thead>
+                <tbody id="active-strikes-body">
+                    <tr><td colspan="8" class="empty-cell">Sin datos</td></tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
