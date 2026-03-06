@@ -369,7 +369,7 @@ body {
 }
 
 /* --- Analysis Card --- */
-.analysis-card { margin: 16px 24px; }
+.analysis-card { /* margin via .content-section */ }
 
 .analysis-actions {
     display: flex;
@@ -641,8 +641,8 @@ body {
     font-size: 0.72rem;
 }
 
-/* --- Full-width card --- */
-.full-width-card {
+/* --- Content sections (consistent margins) --- */
+.content-section {
     margin: 16px 24px 0;
 }
 
@@ -708,7 +708,7 @@ body {
     .metrics-row { grid-template-columns: 1fr; }
     .chart-container { height: 250px; }
     .chart-short { height: 200px; }
-    .analysis-card { margin: 16px 12px; }
+    .content-section { margin: 16px 12px 0; }
     .card-header { flex-direction: column; align-items: flex-start; gap: 4px; }
     .analysis-actions { flex-wrap: wrap; }
     body { font-size: 14px; }

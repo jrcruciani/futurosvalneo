@@ -54,4 +54,8 @@ const API = {
     getDatasources() {
         return this.request('/api/ingest/datasources');
     },
+
+    getOpsStatus() {
+        return this.request('/api/ops-status');
+    },
 };

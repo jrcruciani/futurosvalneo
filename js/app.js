@@ -12,7 +12,14 @@ const App = {
     bindEvents() {
         document.getElementById('btn-status')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            document.getElementById('status-panel')?.classList.toggle('hidden');
+            const panel = document.getElementById('status-panel');
+            panel?.classList.toggle('hidden');
+            if (panel && !panel.classList.contains('hidden')) {
+                this.loadOpsStatus();
+            }
+        });
+        document.getElementById('status-panel')?.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
         document.addEventListener('click', () => {
             document.getElementById('status-panel')?.classList.add('hidden');
@@ -116,6 +123,16 @@ const App = {
         }
     },
 
+    async loadOpsStatus() {
+        try {
+            const status = await API.getOpsStatus();
+            this.renderModuleStatus({ moduleStatus: status.moduleStatus, missingInputs: status.pendingModules });
+        } catch (error) {
+            const list = document.getElementById('module-status');
+            if (list) list.innerHTML = '<li class="module-item pending"><span>Error cargando estado</span></li>';
+        }
+    },
+
     async saveSnapshot() {
         try {
             const result = await API.saveSnapshot();
@@ -134,13 +151,6 @@ const App = {
         this.renderMetrics(d);
         this.renderMostActive(d);
         this.renderModuleStatus(d);
-
-        const missing = document.getElementById('missing-inputs');
-        if (missing) {
-            missing.innerHTML = (d.missingInputs || []).length
-                ? d.missingInputs.map((x) => `<li>${x}</li>`).join('')
-                : '<li>Sin faltantes críticos.</li>';
-        }
 
         const ts = document.getElementById('data-timestamp');
         if (ts) ts.textContent = new Date(d.timestamp).toLocaleString();
@@ -219,6 +229,14 @@ const App = {
                 </li>
             `).join('')
             : '<li class="module-item pending">Sin estado de módulos.</li>';
+
+        const missing = document.getElementById('missing-inputs');
+        if (missing) {
+            const items = d.missingInputs || [];
+            missing.innerHTML = items.length
+                ? items.map((x) => `<li class="module-item pending"><span>○ ${x}</span></li>`).join('')
+                : '<li class="module-item ready"><span>✓ Sin faltantes críticos</span></li>';
+        }
 
         const btn = document.getElementById('btn-status');
         if (btn) {
