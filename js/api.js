@@ -71,4 +71,15 @@ const API = {
             body: JSON.stringify(payload),
         });
     },
+
+    syncDatasources(force = false) {
+        return this.request('/api/ingest/datasources', {
+            method: 'POST',
+            body: JSON.stringify({ force }),
+        });
+    },
+
+    getDatasources() {
+        return this.request('/api/ingest/datasources');
+    },
 };

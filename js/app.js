@@ -11,6 +11,8 @@ const App = {
 
     bindEvents() {
         document.getElementById('btn-init-db')?.addEventListener('click', () => this.initDB());
+        document.getElementById('btn-sync-r2')?.addEventListener('click', () => this.syncDatasources(false));
+        document.getElementById('btn-sync-r2-force')?.addEventListener('click', () => this.syncDatasources(true));
         document.getElementById('btn-refresh')?.addEventListener('click', () => this.loadData(true));
         document.getElementById('btn-snapshot')?.addEventListener('click', () => this.saveSnapshot());
         document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis(false));
@@ -102,6 +104,24 @@ const App = {
             this.showError(`Análisis: ${error.message}`);
         } finally {
             this.setLoading('loading-analysis', false);
+        }
+    },
+
+    async syncDatasources(force = false) {
+        this.setLoading('loading-main', true);
+        try {
+            const result = await API.syncDatasources(force);
+            const s = result.summary || {};
+            this.showToast(`Sync R2: ${s.ok} procesados, ${s.skipped} omitidos${s.errors ? `, ${s.errors} errores` : ''}.`);
+            if (s.errors) {
+                const failed = result.results.filter((r) => r.status === 'error').map((r) => r.reason).join('; ');
+                this.showError(`Errores en Sync R2: ${failed}`);
+            }
+            await this.loadData(true);
+        } catch (error) {
+            this.showError(`Sync R2: ${error.message}`);
+        } finally {
+            this.setLoading('loading-main', false);
         }
     },
 
