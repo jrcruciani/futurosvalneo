@@ -44,34 +44,6 @@ const API = {
         return this.request('/api/analysis');
     },
 
-    ingestCME(moduleName, fileName, content, asOfDate, mimeType = 'text/csv') {
-        return this.request('/api/ingest/cme', {
-            method: 'POST',
-            body: JSON.stringify({ moduleName, fileName, content, asOfDate, mimeType }),
-        });
-    },
-
-    ingestNinja(payload) {
-        return this.request('/api/ingest/ninja', {
-            method: 'POST',
-            body: JSON.stringify(payload),
-        });
-    },
-
-    ingestDarkpool(fileName, content, conversionRatio, asOfDate) {
-        return this.request('/api/ingest/darkpool', {
-            method: 'POST',
-            body: JSON.stringify({ fileName, content, conversionRatio, asOfDate }),
-        });
-    },
-
-    ingestQuikvol(payload) {
-        return this.request('/api/ingest/quikvol', {
-            method: 'POST',
-            body: JSON.stringify(payload),
-        });
-    },
-
     syncDatasources(force = false) {
         return this.request('/api/ingest/datasources', {
             method: 'POST',

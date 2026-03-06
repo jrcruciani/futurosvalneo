@@ -31,90 +31,18 @@
             <button id="btn-sync-r2-force" class="btn btn-ghost btn-sm" title="Forzar re-proceso de todos los archivos">↺</button>
             <button id="btn-refresh" class="btn btn-secondary">↻ Refresh</button>
             <button id="btn-snapshot" class="btn btn-ghost">💾 Snapshot</button>
+            <label class="toggle-inline">
+                <input type="checkbox" id="use-claude">
+                <span>Claude</span>
+            </label>
             <button id="btn-analysis" class="btn btn-primary">Orquestar</button>
-            <button id="btn-analysis-force" class="btn btn-ghost btn-sm">↻</button>
+            <button id="btn-analysis-force" class="btn btn-ghost btn-sm" title="Forzar re-análisis">↻</button>
         </div>
     </header>
 
     <div id="market-bar" class="market-bar">
         <div class="market-item"><span class="market-label">Cargando...</span></div>
     </div>
-
-    <section class="card form-card">
-        <div class="card-header">
-            <span class="card-title">Ingesta de Fuentes</span>
-            <label class="toggle-inline">
-                <input type="checkbox" id="use-claude">
-                <span>Usar Claude en orquestación</span>
-            </label>
-        </div>
-        <div class="ingest-grid">
-            <form id="form-cme" class="ingest-form">
-                <h4>CME CSV/PDF Export</h4>
-                <label>Módulo
-                    <select id="cme-module">
-                        <option value="oi_change_heatmap">M1 - OI Change Heatmap</option>
-                        <option value="volume_heatmap">M1 - Volume Heatmap</option>
-                        <option value="oi_heatmap">M3 - OI Heatmap</option>
-                        <option value="most_active_calls">M2 - Most Active Calls</option>
-                        <option value="most_active_puts">M2 - Most Active Puts</option>
-                        <option value="most_active_calls_oic">M2 - Calls OIC</option>
-                        <option value="most_active_puts_oic">M2 - Puts OIC</option>
-                        <option value="vol2vol_intraday">M4 - Vol2Vol Intraday</option>
-                    </select>
-                </label>
-                <label>Fecha de datos
-                    <input id="cme-date" type="date">
-                </label>
-                <label>Archivo
-                    <input id="cme-file" type="file" accept=".csv,.txt,.json,.pdf,.jpg,.jpeg,.png" required>
-                </label>
-                <button class="btn btn-primary" type="submit">Subir CME</button>
-            </form>
-
-            <form id="form-ninja" class="ingest-form">
-                <h4>NinjaTrader Realtime</h4>
-                <label>Archivo opcional (NQ_Price.txt / CSV)
-                    <input id="ninja-file" type="file" accept=".txt,.csv">
-                </label>
-                <label>NQ Price
-                    <input id="ninja-price" type="number" step="0.01" placeholder="24850.25">
-                </label>
-                <label>Volume
-                    <input id="ninja-volume" type="number" step="1" placeholder="0">
-                </label>
-                <label>Timestamp (ISO)
-                    <input id="ninja-time" type="text" placeholder="2026-03-06T14:20:00Z">
-                </label>
-                <button class="btn btn-primary" type="submit">Guardar Tick</button>
-            </form>
-
-            <form id="form-darkpool" class="ingest-form">
-                <h4>DarkPool QQQ → NQ</h4>
-                <label>Conversion Ratio
-                    <input id="darkpool-ratio" type="number" step="0.0001" placeholder="40.35" required>
-                </label>
-                <label>Fecha de datos
-                    <input id="darkpool-date" type="date">
-                </label>
-                <label>CSV DarkPool
-                    <input id="darkpool-file" type="file" accept=".csv" required>
-                </label>
-                <button class="btn btn-primary" type="submit">Subir DarkPool</button>
-            </form>
-
-            <form id="form-quikvol" class="ingest-form">
-                <h4>QuikVol / Volatility</h4>
-                <label>Archivo (imagen/json)
-                    <input id="quikvol-file" type="file" accept=".json,.txt,.png,.jpg,.jpeg" required>
-                </label>
-                <label>Notas manuales (opcional)
-                    <textarea id="quikvol-notes" rows="3" placeholder="Resumen operativo del gráfico..."></textarea>
-                </label>
-                <button class="btn btn-primary" type="submit">Subir QuikVol</button>
-            </form>
-        </div>
-    </section>
 
     <section class="metrics-row">
         <div class="card metric-card">
