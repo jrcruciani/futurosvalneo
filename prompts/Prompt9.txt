@@ -1,0 +1,7 @@
+Vamos a iniciar con el MODULO DE ANALISIS 4: el grafico de Vol2Vol™ Expected Range , para ello te entrego el archivo adjunto
+
+09.vol2vol_intraday.jpg
+
+Te adjunto el archivo NQ_Price.txt que contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
+
+puedes analizarlo y darme una explicacion detallada y actualizar nuestro mapa completo para la operativa del dia, con todas las zonas de entrada para compras y todas las zonas de entrada para ventas que hemos venido visualizando en cada respuesta a los prompts anteriores , y por favor explica detalladamente cada una de las zonas, el porque de de la entrada en esa zona y la razon tecnica. Sabemos de cierta forma que el Vol2Vol Intraday Volume, Nos muestra exactamente dónde se está "matando" el mercado en tiempo real para el contrato del di

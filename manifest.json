@@ -1,0 +1,13 @@
+{
+    "name": "FuturesValNeo - Prompt Driven NQ Dashboard",
+    "short_name": "FuturesValNeo",
+    "description": "Dashboard de trading NQ con pipeline CME/NinjaTrader/DarkPool y orquestación por prompts",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f3f0",
+    "theme_color": "#6b5ce7",
+    "icons": [
+        { "src": "/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" },
+        { "src": "/icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml" }
+    ]
+}

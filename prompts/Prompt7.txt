@@ -1,0 +1,20 @@
+Vamos a iniciar con el MODULO DE ANALISIS 3: Open Interest Heatmap,  este es el mapa del "compromiso financiero" a través del tiempo, el  Heatmap de OI (Nos muestra el acumulado histórico total de contratos en cada nivel de precio a lo largo del tiempo. Esto nos permite confirmar si los niveles o el nivel mas fuerte es una "muralla de hormigón" (llevan semanas construyéndola) o una "valla de papel" (solo aparecieron contratos hoy).
+
+Te adjunto el archivo de analisis:
+
+08.oi_heatmap.pdf
+
+Te adjunto el archivo NQ_Price.txt que contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
+
+Con este archivo debes seguir los siguientes pasos
+
+Paso 1: Localizar el "Punto de Inflexión"
+Paso 2: Analizar la "Persistencia" (El factor tiempo)
+Paso 3: Identificar el "Suelo"  Put Wall o  Techo Call Wall
+Paso 4: Detección de Anomalías ITM (In The Money)
+Paso 5. Resumen de analisis para la operativa, Zona de Atracción, Resistencia Extrema, Soporte de Hierrp
+Paso 6. Detalla la operativa si son sitios o zonas para comprar o vender
+
+De esta tablas por favor quiero que me expliques detalladamente que informacion es la que buscas, y como la interpretas, que lo hagas de manera muy detallada de tal forma que yo tambien pueda hacerlo, crea un paso a paso del analisis
+
+Paso 5: Resumen del Diagnóstico para hoy, detall si son sitios o zonas para comprar o vender

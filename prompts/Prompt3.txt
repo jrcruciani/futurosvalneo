@@ -1,0 +1,10 @@
+Por favor verifica los archivos .csv adjuntos : 
+
+
+02.cme_oi_change_heatmap.csv
+03.cme_volume_heatmap.csv
+NQ_Price.txt
+
+El archivo NQ_Price.txt, contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
+
+Los archivos 02.cme_oi_change_heatmap.csv y 03.cme_volume_heatmap.csv, son los que forman el grafico del OI Change, analiza y confirma los valores del grafico superior, revisa mas en profunidad como analista profesional que eres, que no se nos esten escapando niveles

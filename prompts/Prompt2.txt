@@ -1,0 +1,22 @@
+Vamos a iniciar con el MODULO DE ANALISIS 1: en este modulo analizaremos el grafico de OI Change, esto es vital porque para el trading del dia actual no nos importa el acumulado historico, sino donde se ha inyectado o retirado dinero en las ultimas 24 horas, esto nos ayudara a revelar si los operadores estan defendiendo niveles o recapitulando, para ello te adjunto la imagen extraida del sitio web de la CME y un archivo con el valor actual del precio 
+
+01.OI_change.jpg 
+NQ_Price.txt
+
+El archivo NQ_Price.txt, contiene el nivel actual del precio para que lo tengas en cuenta al momento de hacer el analisis
+
+En este grafico buscaremos
+1. Strikes con mayor "OI Change" positivo: Donde se están abriendo nuevas murallas.
+2. Strikes con "OI Change" negativo: Donde los traders están cerrando posiciones por miedo o toma de beneficios.
+3. La relación Call/Put alrededor del precio para determinar el sesgo de la sesión.
+
+El analisis debe estar unicamente enfoncado enlos niveles criticos para la sesion de trading del dia de hoy para el Nasdaq y debe estar organizado de esta manera.
+
+El analisis de niveles debes organizarlo de esta manera, explicando e interpretando cada uno 
+
+1. Análisis del Sentimiento (OI Change)
+* Zona de Resistencia Inmediata
+* Zona de Soporte
+2. Relación Volumen vs. OI Change
+3. Niveles Clave para Hoy
+4. Diagnóstico para la operativa

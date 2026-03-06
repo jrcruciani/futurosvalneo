@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuturesValNeo — Prompt-Driven NQ Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg">
+    <meta name="theme-color" content="#6b5ce7">
+</head>
+<body>
+    <div id="error-banner" class="error-banner hidden"></div>
+
+    <div id="loading-main" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Cargando pipeline de datos...</p>
+    </div>
+
+    <header class="header">
+        <div class="header-left">
+            <h1 class="logo"><span class="logo-icon">◈</span> FuturesValNeo</h1>
+            <span class="header-subtitle">CME + NinjaTrader + DarkPool + QuikVol</span>
+        </div>
+        <div class="header-right">
+            <span id="cache-badge" class="badge cached"></span>
+            <button id="btn-init-db" class="btn btn-ghost">⚙ Init DB</button>
+            <button id="btn-refresh" class="btn btn-secondary">↻ Refresh</button>
+            <button id="btn-snapshot" class="btn btn-ghost">💾 Snapshot</button>
+            <button id="btn-analysis" class="btn btn-primary">Orquestar</button>
+            <button id="btn-analysis-force" class="btn btn-ghost btn-sm">↻</button>
+        </div>
+    </header>
+
+    <div id="market-bar" class="market-bar">
+        <div class="market-item"><span class="market-label">Cargando...</span></div>
+    </div>
+
+    <section class="card form-card">
+        <div class="card-header">
+            <span class="card-title">Ingesta de Fuentes</span>
+            <label class="toggle-inline">
+                <input type="checkbox" id="use-claude">
+                <span>Usar Claude en orquestación</span>
+            </label>
+        </div>
+        <div class="ingest-grid">
+            <form id="form-cme" class="ingest-form">
+                <h4>CME CSV/PDF Export</h4>
+                <label>Módulo
+                    <select id="cme-module">
+                        <option value="oi_change_heatmap">M1 - OI Change Heatmap</option>
+                        <option value="volume_heatmap">M1 - Volume Heatmap</option>
+                        <option value="oi_heatmap">M3 - OI Heatmap</option>
+                        <option value="most_active_calls">M2 - Most Active Calls</option>
+                        <option value="most_active_puts">M2 - Most Active Puts</option>
+                        <option value="most_active_calls_oic">M2 - Calls OIC</option>
+                        <option value="most_active_puts_oic">M2 - Puts OIC</option>
+                        <option value="vol2vol_intraday">M4 - Vol2Vol Intraday</option>
+                    </select>
+                </label>
+                <label>Fecha de datos
+                    <input id="cme-date" type="date">
+                </label>
+                <label>Archivo
+                    <input id="cme-file" type="file" accept=".csv,.txt,.json,.pdf,.jpg,.jpeg,.png" required>
+                </label>
+                <button class="btn btn-primary" type="submit">Subir CME</button>
+            </form>
+
+            <form id="form-ninja" class="ingest-form">
+                <h4>NinjaTrader Realtime</h4>
+                <label>Archivo opcional (NQ_Price.txt / CSV)
+                    <input id="ninja-file" type="file" accept=".txt,.csv">
+                </label>
+                <label>NQ Price
+                    <input id="ninja-price" type="number" step="0.01" placeholder="24850.25">
+                </label>
+                <label>Volume
+                    <input id="ninja-volume" type="number" step="1" placeholder="0">
+                </label>
+                <label>Timestamp (ISO)
+                    <input id="ninja-time" type="text" placeholder="2026-03-06T14:20:00Z">
+                </label>
+                <button class="btn btn-primary" type="submit">Guardar Tick</button>
+            </form>
+
+            <form id="form-darkpool" class="ingest-form">
+                <h4>DarkPool QQQ → NQ</h4>
+                <label>Conversion Ratio
+                    <input id="darkpool-ratio" type="number" step="0.0001" placeholder="40.35" required>
+                </label>
+                <label>Fecha de datos
+                    <input id="darkpool-date" type="date">
+                </label>
+                <label>CSV DarkPool
+                    <input id="darkpool-file" type="file" accept=".csv" required>
+                </label>
+                <button class="btn btn-primary" type="submit">Subir DarkPool</button>
+            </form>
+
+            <form id="form-quikvol" class="ingest-form">
+                <h4>QuikVol / Volatility</h4>
+                <label>Archivo (imagen/json)
+                    <input id="quikvol-file" type="file" accept=".json,.txt,.png,.jpg,.jpeg" required>
+                </label>
+                <label>Notas manuales (opcional)
+                    <textarea id="quikvol-notes" rows="3" placeholder="Resumen operativo del gráfico..."></textarea>
+                </label>
+                <button class="btn btn-primary" type="submit">Subir QuikVol</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="metrics-row">
+        <div class="card metric-card">
+            <div class="card-header"><span class="card-title">Max Pain</span></div>
+            <div id="metric-max-pain" class="metric-big">—</div>
+            <div class="metric-sub">Nivel NQ</div>
+        </div>
+        <div class="card metric-card">
+            <div class="card-header"><span class="card-title">Call Wall</span></div>
+            <div id="metric-call-wall" class="metric-big">—</div>
+            <div class="metric-sub">Resistencia dominante</div>
+        </div>
+        <div class="card metric-card">
+            <div class="card-header"><span class="card-title">Put Wall</span></div>
+            <div id="metric-put-wall" class="metric-big">—</div>
+            <div class="metric-sub">Soporte dominante</div>
+        </div>
+        <div class="card metric-card">
+            <div class="card-header"><span class="card-title">Put/Call Ratio</span></div>
+            <div id="metric-pcr" class="metric-big">—</div>
+            <div class="metric-sub">OI agregado</div>
+        </div>
+    </section>
+
+    <section class="two-col">
+        <div class="card table-card">
+            <div class="card-header">
+                <span class="card-title">Most Active Strikes</span>
+                <span class="card-badge" id="metric-vol">C:0 / P:0</span>
+            </div>
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>NQ Strike</th>
+                            <th>Vol Total</th>
+                            <th class="call">Call Vol</th>
+                            <th class="put">Put Vol</th>
+                            <th>Call OI</th>
+                            <th>Put OI</th>
+                            <th>C OI Δ</th>
+                            <th>P OI Δ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="active-strikes-body">
+                        <tr><td colspan="8" class="empty-cell">Sin datos</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card vol-card">
+            <div class="card-header">
+                <span class="card-title">Estado de Módulos</span>
+                <span class="card-badge" id="metric-oi">C:0 / P:0</span>
+            </div>
+            <ul id="module-status" class="module-list"></ul>
+            <div class="card-header">
+                <span class="card-title">Faltantes Detectados</span>
+            </div>
+            <ul id="missing-inputs" class="module-list"></ul>
+        </div>
+    </section>
+
+    <section class="card analysis-card">
+        <div class="card-header">
+            <div>
+                <span class="card-icon">🤖</span>
+                <span class="card-title">Orquestación Prompt-Driven</span>
+                <span id="analysis-cache" class="badge"></span>
+            </div>
+            <span id="analysis-time" class="analysis-time"></span>
+        </div>
+        <div id="loading-analysis" class="loading-inline hidden">
+            <div class="spinner-sm"></div>
+            <span>Ejecutando módulos de análisis...</span>
+        </div>
+        <div id="analysis-content" class="analysis-content empty">
+            <p class="empty-msg">Ejecuta "Orquestar" para consolidar Prompt1..Prompt11 con los datos actuales.</p>
+        </div>
+    </section>
+
+    <section class="card table-card">
+        <div class="card-header">
+            <span class="card-title">Snapshots Recientes</span>
+        </div>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Call Wall</th>
+                        <th>Put Wall</th>
+                        <th>P/C Ratio</th>
+                        <th>Atracción</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                    <tr><td colspan="5" class="empty-cell">Sin snapshots</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>FuturesValNeo — Datos: CME PDFs/CSV + NinjaTrader + DarkPool + QuikVol</span>
+        <span id="data-timestamp"></span>
+    </footer>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>

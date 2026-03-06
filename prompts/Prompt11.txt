@@ -1,0 +1,17 @@
+Vamos a iniciar con el MODULO DE ANALISIS 6: para ello te entregaremos los DarkPoolLevel, extraidos de la plataforma QuantData,el archivo adjunto
+
+13.darkpool_levels_QQQ.csv
+
+Este archivo, contiene los niveles para que sumes estos a nuestro analisis. Debes hacer la conversion QQQ → NQ 
+
+
+Vamos a :
+
+1. Extracción y Conversión de Datos (QQQ → NQ)
+2. Qué información buscamos y Cómo se interpreta
+* Concentración de Volumen (Signature Trades)
+* Mecánica de Market Makers
+3. Importancia y Afectación a la Liquidez, con niveles criticos
+4. Actualización del Mapa Operativo (Diagnóstico Institucional), con las zonas para compras y ventas del dia, por favor explicalas
+
+Una vez realizada la conversion crea un resumen del Diagnóstico para hoy, detalla los sitios para comprar y los sitios para vender
