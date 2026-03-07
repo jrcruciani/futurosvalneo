@@ -24,7 +24,6 @@ const App = {
         document.addEventListener('click', () => {
             document.getElementById('status-panel')?.classList.add('hidden');
         });
-        document.getElementById('btn-sync-r2')?.addEventListener('click', () => this.syncDatasources());
         document.getElementById('btn-refresh')?.addEventListener('click', () => this.loadData(true));
         document.getElementById('btn-snapshot')?.addEventListener('click', () => this.saveSnapshot());
         document.getElementById('btn-analysis')?.addEventListener('click', () => this.runAnalysis());
@@ -87,13 +86,10 @@ const App = {
     },
 
     async runAnalysis() {
-        if (!this.data) {
-            this.showError('Primero carga datos del dashboard.');
-            return;
-        }
-
         this.setLoading('loading-analysis', true);
         try {
+            await API.syncDatasources(true);
+            await this.loadData(true);
             this.analysis = await API.runAnalysis();
             this.renderAnalysis();
             this.showToast('Análisis generado.');
